@@ -3,7 +3,7 @@
 
 ### Django ###
 node_modules/
-dua_main.sqlite
+
 *.log
 *.pot
 *.pyc

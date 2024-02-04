@@ -19,9 +19,11 @@ const dataFetch = (query, res) => {
   });
 };
 
-app.get("/",(req,res)=>{
-  res.send("server is running (:")
-})
+
+
+app.get("/", (req, res) => {
+  res.send("server is running (:");
+});
 
 // get all categories
 app.get("/categories", (req, res) => {
@@ -62,6 +64,8 @@ app.get("/doa", (req, res) => {
 
   return dataFetch(doaQuery, res);
 });
+
+
 
 app.listen(port, () => {
   console.log(`server is running on http://localhost:${port}`);
