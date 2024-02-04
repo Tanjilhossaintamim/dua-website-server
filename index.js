@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const sqlite3 = require("sqlite3").verbose();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 7000;
 
 const app = express();
 
@@ -19,6 +19,10 @@ const dataFetch = (query, res) => {
   });
 };
 
+app.get("/",(req,res)=>{
+  res.send("server is running (:")
+})
+
 // get all categories
 app.get("/categories", (req, res) => {
   const query = `SELECT * FROM 'category'`;
@@ -34,7 +38,9 @@ app.get("/subcategories", (req, res) => {
     return res.status(403).send({ message: "Provide a Category id !" });
   }
   const subCategoryQuery = `SELECT * FROM 'sub_category' WHERE cat_id=${categoryId}`;
-  const doaQuery = `SELECT * FROM 'dua'  WHERE cat_id=${categoryId}`;
+  const doaQuery = `SELECT * FROM 'dua'  WHERE cat_id=${
+    categoryId == 0 ? 1 : categoryId
+  }`;
   db.all(subCategoryQuery, (err, subcat) => {
     if (err) {
       return res.status(500).send(err);
@@ -46,6 +52,15 @@ app.get("/subcategories", (req, res) => {
       return res.status(200).send({ subcategories: subcat, doa: doa });
     });
   });
+});
+
+app.get("/doa", (req, res) => {
+  const categoryId = req.query?.cat_id;
+  const doaQuery = `SELECT * FROM 'dua'  WHERE cat_id=${
+    categoryId == 0 ? 1 : categoryId
+  }`;
+
+  return dataFetch(doaQuery, res);
 });
 
 app.listen(port, () => {
